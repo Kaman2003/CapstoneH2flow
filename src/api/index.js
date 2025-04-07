@@ -21,14 +21,14 @@ const fetchWithAuth = async (url, options = {}) => {
 };
 
 export const register = async (email, password, name) => {
-  return await fetchWithAuth(`${API_URL}/api/auth/register`, { // Added /api/auth
+  return await fetchWithAuth(`${API_URL}/api/auth/register`, { 
     method: "POST",
     body: JSON.stringify({ email, password, name }),
   });
 };
 
 export const login = async (email, password) => {
-  return fetchWithAuth('api/auth/login', {  // Now properly includes the full path
+  return fetchWithAuth('api/auth/login', {  
     method: "POST",
     body: JSON.stringify({ email, password }),
   });
