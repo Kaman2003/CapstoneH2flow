@@ -25,14 +25,21 @@ const app = express();
 
 // Enhanced CORS configuration
 const corsOptions = {
-  origin: ["http://localhost:3000", "http://localhost:5173"], // Add all your frontend URLs
+  origin: [
+    "http://localhost:5174", // Add your exact frontend port
+    "http://localhost:5173",
+    "http://localhost:3000"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
+  optionsSuccessStatus: 200 
 };
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // Enable pre-flight requests
+app.options('/api/auth/login', cors(corsOptions));
+app.options('/api/auth/register', cors(corsOptions));
 
 app.use(bodyParser.json());
 

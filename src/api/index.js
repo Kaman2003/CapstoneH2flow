@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:5000/api/auth";
+const BASE_URL = import.meta.env.DEV
+  ? import.meta.env.VITE_DEV_API_URL || 'http://localhost:5000'  // Remove /api here
+  : import.meta.env.VITE_PROD_API_URL || 'https://your-production-url.com';
 
 const fetchWithAuth = async (url, options = {}) => {
   const response = await fetch(url, {
@@ -19,39 +21,24 @@ const fetchWithAuth = async (url, options = {}) => {
 };
 
 export const register = async (email, password, name) => {
-  try {
-    return await fetchWithAuth(`${API_URL}/register`, {
-      method: "POST",
-      body: JSON.stringify({ email, password, name }),
-    });
-  } catch (error) {
-    console.error("Registration error:", error);
-    throw error;
-  }
+  return await fetchWithAuth(`${API_URL}/api/auth/register`, { // Added /api/auth
+    method: "POST",
+    body: JSON.stringify({ email, password, name }),
+  });
 };
 
 export const login = async (email, password) => {
-  try {
-    return await fetchWithAuth(`${API_URL}/login`, {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
-  } catch (error) {
-    console.error("Login error:", error);
-    throw error;
-  }
+  return fetchWithAuth('api/auth/login', {  // Now properly includes the full path
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
 };
 
 export const getCurrentUser = async (token) => {
-  try {
-    return await fetchWithAuth(`${API_URL}/me`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  } catch (error) {
-    console.error("Get user error:", error);
-    throw error;
-  }
+  return await fetchWithAuth(`${API_URL}/api/auth/me`, { // Added /api/auth
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
