@@ -1,6 +1,6 @@
 const BASE_URL = import.meta.env.DEV
   ? import.meta.env.VITE_DEV_API_URL || 'http://localhost:5000'  // Remove /api here
-  : import.meta.env.VITE_PROD_API_URL || 'https://your-production-url.com';
+  : import.meta.env.VITE_PROD_API_URL || 'https://majestic-longma-2b131c.netlify.app/';
 
 const fetchWithAuth = async (url, options = {}) => {
   const response = await fetch(url, {
@@ -27,11 +27,21 @@ export const register = async (email, password, name) => {
   });
 };
 
-export const login = async (email, password) => {
-  return fetchWithAuth('api/auth/login', {  
-    method: "POST",
-    body: JSON.stringify({ email, password }),
+export const login = async (credentials) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
   });
+
+  if (!response.ok) {
+    const errorText = await response.text(); // Log raw response for debugging
+    throw new Error(`Error: ${response.status} - ${errorText}`);
+  }
+
+  return response.json();
 };
 
 export const getCurrentUser = async (token) => {

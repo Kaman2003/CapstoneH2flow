@@ -28,7 +28,8 @@ const corsOptions = {
   origin: [
     "http://localhost:5174", // Add your exact frontend port
     "http://localhost:5173",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://majestic-longma-2b131c.netlify.app"
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -37,6 +38,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(express.json());
 app.options("*", cors(corsOptions)); // Enable pre-flight requests
 app.options('/api/auth/login', cors(corsOptions));
 app.options('/api/auth/register', cors(corsOptions));
